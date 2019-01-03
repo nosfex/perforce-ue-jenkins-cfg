@@ -1,0 +1,81 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="org.jenkinsci.plugins.p4.PerforceScm" plugin="p4@1.8.10">
+    <credential>42ba2a2e-3364-4e2c-9723-9da8f00ebe36</credential>
+    <workspace class="org.jenkinsci.plugins.p4.workspace.StreamWorkspaceImpl">
+      <charset>none</charset>
+      <pinHost>false</pinHost>
+      <streamName>//detective/mainline</streamName>
+      <format>jenkins-${NODE_NAME}-${JOB_NAME}-${EXECUTOR_NUMBER}</format>
+    </workspace>
+    <populate class="org.jenkinsci.plugins.p4.populate.AutoCleanImpl">
+      <have>true</have>
+      <force>false</force>
+      <modtime>false</modtime>
+      <quiet>true</quiet>
+      <pin></pin>
+      <parallel>
+        <enable>false</enable>
+        <threads>4</threads>
+        <minfiles>1</minfiles>
+        <minbytes>1024</minbytes>
+      </parallel>
+      <replace>true</replace>
+      <delete>true</delete>
+      <tidy>false</tidy>
+    </populate>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec>H H(0-7) * * *</spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>rd /s /q temp </command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>attrib -s -h -r &quot;%WORKSPACE%&quot; /s /d</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>attrib -r &quot;%WORKSPACE%/detective.*&quot; /s /d</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;c:/Program Files/Epic Games/UE_4.20/Engine/Binaries/DotNet/UnrealBuildTool.exe&quot; -projectfiles -project=&quot;%WORKSPACE%/detective.uproject&quot; -game -rocket -progress -noxge </command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe&quot; &quot;%WORKSPACE%/detective.sln&quot; /t:build /p:Configuration=&quot;Development Editor&quot;;Platform=Win64;verbosity=diagnostic</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;c:/Program Files/Epic Games/UE_4.20/Engine/Build/BatchFiles/RunUAT.bat&quot; -ScriptsForProject=&quot;%WORKSPACE%/detective.uproject&quot; BuildCookRun -installed -nop4 -project=&quot;%WORKSPACE%/detective.uproject&quot; -allmaps -cook -stage -noxge -archive -archivedirectory=&quot;%WORKSPACE%/archive&quot; -package -clientconfig=Development -ue4exe=UE4Editor-Cmd.exe -pak -prereqs -nodebuginfo -targetplatform=Win64 -build -utf8output </command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;E:\Program Files\7-Zip\7z.exe&quot; a -t7z &quot;%WORKSPACE%/archive/%P4_CHANGELIST%_detective_Development_x64.rar&quot; &quot;%WORKSPACE%/archive/WindowsNoEditor&quot; </command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot;open sftp://root:gaza520394@159.65.166.34 -hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%P4_CHANGELIST%_detective_Development_x64.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
+</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>copy &quot;%WORKSPACE%\archive\%P4_CHANGELIST%_detective_Development_x64.rar&quot; &quot;%WORKSPACE%\archive\%JOB_NAME%.rar&quot;</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot;open sftp://root:gaza520394@159.65.166.34 -hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%JOB_NAME%.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
+</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.8.10"/>
+  </buildWrappers>
+</project>

@@ -1,0 +1,7 @@
+Started on Jan 3, 2019 8:02:49 AM
+P4: Polling on: master with:jenkins-master-P4_WinBuild-0
+Found last change 49 on syncID jenkins-NODE_NAME-P4_WinBuild-EXECUTOR_NUMBER
+P4: Unable to setup workspace: java.lang.NullPointerException
+FATAL: Aborted
+Done. Took 3.1 sec
+No changes
