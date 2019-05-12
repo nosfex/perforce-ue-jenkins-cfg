@@ -63,14 +63,14 @@
       <command>&quot;E:\Program Files\7-Zip\7z.exe&quot; a -t7z &quot;%WORKSPACE%/archive/%P4_CHANGELIST%_detective_Development_x64.rar&quot; &quot;%WORKSPACE%/archive/WindowsNoEditor&quot; </command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
-      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot;open sftp://root:gaza520394@159.65.166.34 -hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%P4_CHANGELIST%_detective_Development_x64.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
+      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot; -hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%P4_CHANGELIST%_detective_Development_x64.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
 </command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
       <command>copy &quot;%WORKSPACE%\archive\%P4_CHANGELIST%_detective_Development_x64.rar&quot; &quot;%WORKSPACE%\archive\%JOB_NAME%.rar&quot;</command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
-      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot;open sftp://root:gaza520394@159.65.166.34 -hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%JOB_NAME%.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
+      <command>&quot;E:\Program Files (x86)\WinSCP\WinSCP.com&quot; /command &quot;-hostkey=*&quot; &quot;option confirm off&quot; &quot;put %WORKSPACE%\archive\%JOB_NAME%.rar /usr/%JOB_NAME%/&quot; &quot;exit&quot;&#xd;
 </command>
     </hudson.tasks.BatchFile>
   </builders>
